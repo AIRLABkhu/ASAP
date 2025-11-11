@@ -1,0 +1,33 @@
+name: gym
+channels:
+  - conda-forge
+  - pytorch
+  - nvidia
+  - defaults
+dependencies:
+  - python=3.10.16
+  - pip
+  - pytorch=2.6.0
+  - torchvision=0.21.0
+  - torchaudio=2.6.0 
+  - pytorch-cuda=12.4
+  - cudatoolkit 
+  - cudnn
+  - pip:
+      - box2d-py
+      - gym
+      - gymnasium==1.0.0
+      - h5py
+      - matplotlib
+      - mujoco==3.3.3
+      - mujoco-py==2.1.2.14
+      - numpy
+      - opencv-python
+      - pandas
+      - pygame
+      - stable-baselines
+      - stable-baselines3==2.5.0
+      - swig
+      - sympy
+      - tensorboard
+      - tensorflow
