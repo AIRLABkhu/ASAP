@@ -44,12 +44,6 @@
   <script src="static/js/bulma-carousel.min.js"></script>
   <script src="static/js/bulma-slider.min.js"></script>
   <script src="static/js/index.js"></script>
-  <script>
-    MathJax = {
-      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
-    };
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 
   <!-- <style>
     table, th, td {
@@ -261,24 +255,6 @@
     font-size: 18px; /* 폰트 크기 조정 */
   }
 
-  .asap-item {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .image-wrapper {
-    flex: 1;                       /* 🔥 남은 공간 전부 사용 */
-    display: flex;
-    align-items: center;           /* 🔥 세로 중앙 */
-    justify-content: center;       /* 가로 중앙 */
-  }
-
-  .asap-caption {
-    font-size: 12pt;
-    padding-bottom: 1%;
-  }
-
 </style>
 
 
@@ -307,31 +283,25 @@ Deep reinforcement learning has proven to be a power-  ful approach to solving c
         <div id="results-carousel" class="carousel results-carousel" style="text-align: center;">
 
         <!-- Adaptive Domain Shift -->
-        <div class="item asap-item"> 
-          <div class="image-wrapper">
-            <img src="static/images/figure1_sim_asap.png" alt="fail" width="45%">
-          </div>
-          <h2 class="subtitle has-text-left asap-caption">
+        <div class="item" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between; align-items: center;"> 
+          <img src="static/images/figure1_sim_asap.png" alt="fail" width="45%">
+          <h2 class="subtitle has-text-left" style="padding-bottom: 1%; font-size: 12pt">
             <b>Figure 1.</b> Similar State of ASAP. ASAP uses the environment's transition distribution to define similar states and aligns the action with the expected policy output under this distribution.
           </h2>
         </div>
 
         <!-- Adaptive Domain Shift -->
-        <div class="item asap-item"> 
-          <div class="image-wrapper">
-            <img src="static/images/figure2_asap_arch.png" alt="fail" width="55%" >
-          </div>
-          <h2 class="subtitle has-text-left asap-caption">
+        <div class="item" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between; align-items: center;"> 
+          <img src="static/images/figure2_asap_arch.png" alt="fail" width="55%">
+          <h2 class="subtitle has-text-left" style="padding-bottom: 1%; font-size: 12pt">
             <b>Figure 2.</b> The implementation architecture of ASAP. A prediction head is added after the shared MLP.The prediction head predicts the expected action at time step <em>s<sub>t+1</sub></em> given the state at time step <em>s<sub>t</sub></em>.
           </h2>
         </div>
 
         <!-- Overview -->
-        <div class="item asap-item"> 
-          <div class="image-wrapper">
-            <img src="static/images/figure3_asap_update_flow.png" alt="fail" width="65%" >
-          </div>
-          <h2 class="subtitle has-text-left asap-caption">
+        <div class="item" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between; align-items: center;"> 
+          <img src="static/images/figure3_asap_update_flow.png" alt="fail" width="65%" >
+          <h2 class="subtitle has-text-left" style="padding-bottom: 1%; font-size: 12pt">
             <b>Figure 3.</b> The update procedure of ASAP. The ASAP network takes <em>s<sub>t</sub></em> as input and outputs both the executed action <em>a<sub>t</sub></em> and the predicted expected action at the next state, <em>E[a<sub>t+1</sub>]</em>. The action head is trained to match the output of the prediction head, while the prediction head learns the expected next action over the state distribution stored in the buffer.
           </h2>
         </div>
@@ -340,57 +310,6 @@ Deep reinforcement learning has proven to be a power-  ful approach to solving c
   </div>
   </section>
   <!-- End method carousel -->
-
-  <!--Evaluation -->
-  <section class="hero is-small">
-    <div class="hero-body">
-      <div class="container">
-        <h2 class="title is-3">Evaluation</h2>
-  <h5 class="title is-5">Evaluation Metrics</h3> 
-  <p style="margin-bottom:2em;"></p>
-    <p>
-      We evaluate policies using two complementary metrics:
-      <strong>Cumulative Return (<em>re</em>)</strong> and
-      <strong>Smoothness Score (<em>sm</em>)</strong>.
-    </p>
-
-    <p>
-      <strong>Cumulative Return</strong> measures overall task performance and
-      is computed as the total accumulated reward over an episode.
-    </p>
-
-    <p>
-      <strong>Smoothness Score</strong> quantifies action oscillations based on
-      the frequency spectrum of actions.
-      Following prior work, we compute smoothness using the FFT as:
-    </p>
-
-    <p style="text-align: center;">
-      $$ 
-      \mathrm{Sm} = \frac{2}{n f_s} \sum_{i=1}^{n} M_i f_i
-      $$
-    </p>
-
-    <p>
-      Here, $f_i$ and $M_i$ denote the frequency and amplitude of the
-      $i$-th spectral component, and $f_s$ denotes the sampling frequency.
-      This metric computes a frequency-weighted average of action magnitudes.
-      Lower values indicate smoother and more stable control, while higher
-      values correspond to increased high-frequency action components.
-    </p>
-    <p style="margin-bottom:2em;"></p>
-  <h5 class="title is-5">Evaluation on Gymnasium</h3> 
-  <p style="margin-bottom:2em;">
-We visualized the augmented images and selected SRM and Overlay as comparisons to observe pixel-level changes alongside our method.
-As depicted in Figure 5, our method, similar to Overlay, was capable of generating a diverse of domains.
-Additionally, by integrating saliency, our approach highlighted and preserved task-relevant regions.
-  </p>
-<figure style="text-align: center; margin-bottom: 1em;">
-  <img src="static/images/qualitative_analysis2.png" alt="fail" width="60%">
-  <figcaption class="content has-text-centered" style="word-break:normal">
-    <b>Figure 5.</b> Visualization of augmented images. (a) Original images, and augmented images from (b) SRM, (c) Overlay, and (d) DGA2.
-  </figcaption>
-</figure>
         
 <!--BibTex citation -->
 <!-- <section class="section" id="BibTeX">
