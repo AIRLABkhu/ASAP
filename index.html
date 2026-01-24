@@ -499,6 +499,98 @@ Experiments in Gymnasium and Isaac-Lab environments demonstrate that ASAP yields
           network architecture at inference time, making it readily applicable
           to real-world robotic systems.
         </p>
+
+        <p style="margin-bottom:2em;"></p>
+        <h5 class="title is-5">ASAP Objective Function</h5>
+
+        <p>
+          Formally, ASAP optimizes the policy using a composite objective that combines
+          the standard reinforcement learning actor loss with spatial and temporal
+          smoothness penalties:
+        </p>
+
+        <p style="text-align: center;">
+          $$
+          J^{\mathrm{ASAP}}_{\pi_\phi}
+          =
+          J_{\pi_\phi}
+          + \lambda_S L_S
+          + \lambda_P L_P
+          + \lambda_T L_T
+          $$
+        </p>
+
+        <p>
+          Here, <em>J<sub>π<sub>φ</sub></sub></em> denotes the standard actor loss used in
+          common RL algorithms such as PPO and SAC.
+          The additional terms encourage smoothness in both the spatial and temporal
+          domains.
+        </p>
+
+        <p>
+          The <em>spatial smoothing loss</em> aligns the action produced at the current
+          state with the expected action predicted from the preceding state:
+        </p>
+
+        <p style="text-align: center;">
+          $$
+          L_S
+          =
+          \left\|
+            \pi_\phi(s_t)
+            -
+            \texttt{stopgrad}\!\left(\pi_P(s_{t-1})\right)
+          \right\|_2^2
+          $$
+        </p>
+
+        <p>
+          To train the prediction head, ASAP introduces a complementary
+          <em>prediction loss</em>, which encourages the predicted action to match the
+          policy’s actual output while treating the target as fixed:
+        </p>
+
+        <p style="text-align: center;">
+          $$
+          L_P
+          =
+          \left\|
+            \pi_P(s_{t-1})
+            -
+            \texttt{stopgrad}\!\left(\pi_\phi(s_t)\right)
+          \right\|_2^2
+          $$
+        </p>
+
+        <p>
+          This asymmetric design decouples the learning dynamics of the action head and
+          the prediction head, preventing moving-target instability and allowing each
+          component to be optimized with an appropriate learning strength.
+        </p>
+
+        <p>
+          In addition to spatial alignment, ASAP adopts a temporal smoothness penalty
+          based on second-order action differences, originally proposed in Grad-CAPS:
+        </p>
+
+        <p style="text-align: center;">
+          $$
+          L_T
+          =
+          \left\|
+            \frac{a_{t+1} - 2a_t + a_{t-1}}
+            {\tanh(a_{t+1} - a_{t-1}) + \epsilon}
+          \right\|_2^2
+          $$
+        </p>
+
+        <p>
+          This temporal loss suppresses high-frequency oscillations while preserving
+          flexibility for purposeful action changes.
+          The hyperparameters
+          <em>λ<sub>S</sub></em>, <em>λ<sub>P</sub></em>, and <em>λ<sub>T</sub></em>
+          control the relative strength of each regularization term.
+        </p>
       </div>
     </div>
   </section>
